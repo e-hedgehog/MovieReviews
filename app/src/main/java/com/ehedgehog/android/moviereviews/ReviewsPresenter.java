@@ -21,7 +21,7 @@ public class ReviewsPresenter {
     private static final String TAG = "ReviewsPresenter";
 
     public interface Listener {
-        void onStoriesLoaded(List<MovieReview> movieReviews);
+        void onReviewsLoaded(List<MovieReview> movieReviews);
 
         void onLoadingError(String message);
     }
@@ -37,8 +37,8 @@ public class ReviewsPresenter {
         mListener = listener;
     }
 
-    public Disposable loadStories(Context context, int offset) {
-        return getAllStories(offset)
+    public Disposable loadReviews(Context context, int offset) {
+        return getAllReviews(offset)
                 .map(reviewsResponse -> {
                     Log.i(TAG, "Status = " + reviewsResponse.getStatus());
                     return reviewsResponse.getMovieReviews();
@@ -61,11 +61,11 @@ public class ReviewsPresenter {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mListener::onStoriesLoaded, throwable ->
+                .subscribe(mListener::onReviewsLoaded, throwable ->
                         mListener.onLoadingError(throwable.getMessage()));
     }
 
-    public Observable<ReviewsResponse> getAllStories(int offset) {
+    public Observable<ReviewsResponse> getAllReviews(int offset) {
         Log.i(TAG, "offset = " + offset);
         return mReviewsService.getMovieReviews(offset);
     }

@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -109,14 +108,14 @@ public class ReviewsListFragment extends Fragment {
     private void loadStories(int currentPage) {
         isLoading = true;
         mStoriesSubscription = mPresenter
-                .loadStories(getActivity(), currentPage*ITEMS_PER_PAGE);
+                .loadReviews(getActivity(), currentPage*ITEMS_PER_PAGE);
     }
 
     private void setupStoriesPresenter() {
         mPresenter = new ReviewsPresenter(ApiFactory.buildReviewsService());
         mPresenter.addListener(new ReviewsPresenter.Listener() {
             @Override
-            public void onStoriesLoaded(List<MovieReview> movieReviews) {
+            public void onReviewsLoaded(List<MovieReview> movieReviews) {
                 updateUI(movieReviews);
             }
 
@@ -174,33 +173,5 @@ public class ReviewsListFragment extends Fragment {
             mRefreshLayout.setRefreshing(false);
         });
     }
-
-//    private void setupCategorySpinner() {
-//        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
-//                R.array.categories_array, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mCategorySpinner.setAdapter(adapter);
-//
-//        String[] categories = getActivity()
-//                .getResources().getStringArray(R.array.categories_array);
-//        mCategory = categories[StoriesPreferences.getStoredCategory(getActivity())];
-//
-//        mCategorySpinner.setSelection(StoriesPreferences.getStoredCategory(getActivity()));
-//        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                mCategory = categories[position];
-//                StoriesPreferences.setStoredCategory(getActivity(), position);
-//                mProgressBar.setVisibility(View.VISIBLE);
-//
-//                loadStories(mCategory);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//    }
 
 }
